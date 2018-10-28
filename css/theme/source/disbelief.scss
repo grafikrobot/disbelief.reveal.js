@@ -1,0 +1,35 @@
+/**
+ * Disbelief theme for reveal.js.
+ *
+ * Copyright (C) 2018 Disbelief LLC
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+// Include theme-specific fonts
+@import url(../../lib/font/source-sans-pro/source-sans-pro.css);
+@import url(../../lib/font/league-gothic/league-gothic.css);
+
+
+// Override theme settings (see ../template/settings.scss)
+$backgroundColor: #101820;
+
+$mainFontSize: 32px;
+$mainFont: 'Source Sans Pro', Helvetica, sans-serif;
+$headingFont: 'League Gothic', Helvetica, sans-serif;
+$headingTextShadow: none;
+$headingLetterSpacing: -0.03em;
+$headingTextTransform: none;
+$linkColor: #ff5000;
+$linkColorHover: lighten( $linkColor, 20% );
+$selectionBackgroundColor: #ff5000;
+
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------

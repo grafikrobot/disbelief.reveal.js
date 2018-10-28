@@ -7,10 +7,14 @@
 		<title>reveal.js</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/disbelief.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Markdown style slides -->
+		<link rel="script" href="plugin/markdown/marked.js">
+		<link rel="script" href="plugin/markdown/markdown.js">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -24,8 +28,29 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-background-image="lib/image/disbelief-banner.png" data-background-position="top" data-background-size="contain">
+					<h2 style="margin-top: 3em">Beginning Slide</h2>
+					<h3>Name</h3>
+				</section>
+				<section data-markdown data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em">
+					<textarea data-template>
+						### Middle Slides
+					</textarea>
+				</section>
+				<section data-markdown data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em">
+					<textarea data-template>
+						### About Disbelief
+
+						* We’re a games consultation company based out of Boston, MA and Chicago, IL.
+						* We’ve done AAA development, VR, AR and console development.
+						* Notable projects we’ve worked on include Borderlands: The Handsome Collection for PS4 and Xbox One, Gears of War 4, and Oculus Dreamdeck.
+						* Our website is found at http://www.disbelief.com.
+						* We’re are always in the lookout for all levels of developers. Send your resumes and portfolios to jobs@disbelief.com!
+					</textarea>
+				</section>
+				<section data-markdown data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em">
+					Thank you!
+				</section>
 			</div>
 		</div>
 
@@ -37,6 +62,12 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				controls: false,
+				slideNumber: true,
+				fragmentInURL: true,
+				transition: 'convex',
+				width: 960,
+				height: 540,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
