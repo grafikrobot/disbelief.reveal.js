@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Title</title>
+		<title>Algorithm Magic</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/disbelief.css">
@@ -24,6 +24,31 @@
 			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
+
+		<style>
+		#algo-magic {
+			font-size: 0.55em;
+			line-height: 1.2em;
+			text-align: left;
+			padding: 0px 20px;
+			margin: 0px;
+			text-shadow: 0px 0px 3px black,  0px 0px 3px black,  0px 0px 3px black,  0px 0px 3px black;
+		}
+		#algo-magic em {
+			color: burlywood;
+			font-weight: bold;
+		}
+		#camera {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			/* border: 5px grey solid; */
+			z-index: -1;
+			width: 100%;
+			height: 100%;
+		}
+		</style>
 	</head>
 	<body>
 		<script src="lib/js/head.min.js"></script>
@@ -32,13 +57,64 @@
 		<div class="reveal">
 			<div class="slides">
 				<section data-background-image="lib/image/disbelief-banner.png" data-background-position="top" data-background-size="contain">
-					<h2 style="margin-top: 3em">Beginning Slide</h2>
-					<h3>Name</h3>
+					<h2 style="margin-top: 3em">Algorithm Magic</h2>
+					<h3>René Rivera</h3>
 				</section>
-				<section data-markdown data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em">
-					<textarea data-template>
-						### Middle Slides
-					</textarea>
+				<section data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em">
+					<h3><code>std.hpp</code></h3>
+					<pre><code class="hljs" data-trim>
+#include &lt;vector&gt;
+#include &lt;random&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;iterator&gt;
+#include &lt;numeric&gt;
+using namespace std;
+					</code></pre>
+				</section>
+				<section data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em" data-state="show-camera">
+					<video autoplay="true" id="camera"></video>
+					<p id="algo-magic"><code>
+						<span>
+							#include "std.hpp"</br>
+							int main() {</br>
+							<span class="fragment fade-up">
+								&nbsp;&nbsp;vector&lt;int&gt; cards(24); <em>iota</em>(cards.begin(),cards.end(),0);</br>
+							</span>
+							<span class="fragment fade-up">
+								&nbsp;&nbsp;mt19937 r(random_device{}()); <em>shuffle</em>(cards.begin(),cards.end(),r);</br>
+							</span>
+							<span class="fragment fade-up">
+								&nbsp;&nbsp;int C; cin&gt;&gt;C; cout&lt;&lt;"cards["&lt;&lt;C&lt;&lt;"]: "; C = cards[C]; cout&lt;&lt;C&lt;&lt;"\n";</br>
+							</span>
+							<span class="fragment fade-up">
+								&nbsp;&nbsp;<em>shuffle</em>(cards.begin(),cards.end(),r);</br>
+							</span>
+							<span class="fragment fade-up">
+								&nbsp;&nbsp;for (int i: {0,1,2}) {</br>
+								<span class="fragment fade-up">
+									&nbsp;&nbsp;&nbsp;&nbsp;vector&lt;int&gt; decks[4];</br>
+								</span>
+								<span class="fragment fade-up">
+									&nbsp;&nbsp;&nbsp;&nbsp;<em>accumulate</em>(cards.begin(),cards.end(),0,[&](int d, int c) {</br>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decks[d%4].insert(decks[d%4].begin(),c); return (d+1)%4; });</br>
+								</span>
+								<span class="fragment fade-up">
+									&nbsp;&nbsp;&nbsp;&nbsp;int d = distance(decks, <em>find_if</em>(decks,decks+4,</br>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&](auto &d) { return <em>count</em>(d.begin(),d.end(),C) > 0; }));</br>
+								</span>
+								<span class="fragment fade-up">
+									&nbsp;&nbsp;&nbsp;&nbsp;cards.clear(); for (int i: {d,d+1,d+2,d+3}) { </br>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>move</em>(decks[i%4].begin(),decks[i%4].end(),back_inserter(cards)); }</br>
+								</span>
+								&nbsp;&nbsp;}</br>
+							</span>
+							<span class="fragment fade-up">
+								&nbsp;&nbsp;cout&lt;&lt;"cards[4]: "&lt;&lt;cards[4]&lt;&lt;"\n";</br>
+							</span>
+							}
+						</span>
+					</code></p>
 				</section>
 				<section data-markdown data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em">
 					<textarea data-template>
@@ -75,6 +151,17 @@
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
 				]
 			});
+		</script>
+		<script>
+			function show_video() {
+				var video = document.querySelector("#camera");
+				if (navigator.mediaDevices.getUserMedia) {
+					navigator.mediaDevices.getUserMedia({ video: true })
+						.then(function (stream) { video.srcObject = stream; })
+						.catch(function (err0r) { console.log("Something went wrong!"); });
+				}
+			}
+			Reveal.addEventListener('show-camera', show_video);
 		</script>
 	</body>
 </html>
