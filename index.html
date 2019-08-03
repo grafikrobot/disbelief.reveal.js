@@ -27,26 +27,38 @@
 
 		<style>
 		#algo-magic {
-			font-size: 0.55em;
-			line-height: 1.2em;
+			font-size: 0.65em;
+			line-height: 1.3em;
 			text-align: left;
-			padding: 0px 20px;
+			padding: 0px;
 			margin: 0px;
 			text-shadow: 0px 0px 3px black,  0px 0px 3px black,  0px 0px 3px black,  0px 0px 3px black;
 		}
 		#algo-magic em {
-			color: burlywood;
+			color: orangered;
 			font-weight: bold;
 		}
-		#camera {
+		#algo-magic code {
+			margin: 20px;
+			display: block;
+		}
+		#camera, #camera-overlay {
 			position: absolute;
+			z-index: -1;
 			top: 0;
 			left: 0;
-			right: 0;
-			/* border: 5px grey solid; */
-			z-index: -1;
-			width: 100%;
-			height: 100%;
+			width: 960px;
+			height: 540px;
+			max-width: 100%;
+			max-height: 200%;
+		}
+		#camera {
+			z-index: -3;
+		}
+		#camera-overlay {
+			background-image:
+				linear-gradient(#101820 0px, #10182000 30px, #10182000 510px, #101820 540px),
+				linear-gradient(-90deg, #101820 0px, #10182000 30px, #10182000 930px, #101820 960px);
 		}
 		</style>
 	</head>
@@ -72,10 +84,11 @@
 using namespace std;
 					</code></pre>
 				</section>
-				<section data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em" data-state="show-camera">
-					<video autoplay="true" id="camera"></video>
-					<p id="algo-magic"><code>
-						<span>
+				<section id="algo-section" data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em" data-state="show-camera">
+					<div id="camera-overlay"></div>
+					<video id="camera" autoplay="true"></video>
+					<p id="algo-magic">
+						<code>
 							#include "std.hpp"</br>
 							int main() {</br>
 							<span class="fragment fade-up">
@@ -84,8 +97,8 @@ using namespace std;
 							<span class="fragment fade-up">
 								&nbsp;&nbsp;mt19937 r(random_device{}()); <em>shuffle</em>(cards.begin(),cards.end(),r);</br>
 							</span>
-							<span class="fragment fade-up">
-								&nbsp;&nbsp;int C; cin&gt;&gt;C; cout&lt;&lt;"cards["&lt;&lt;C&lt;&lt;"]: "; C = cards[C]; cout&lt;&lt;C&lt;&lt;"\n";</br>
+							<span class="">
+								&nbsp;&nbsp;<span class="fragment fade-up">int C; cin&gt;&gt;C;</span><span class="fragment fade-up"> cout&lt;&lt;"cards["&lt;&lt;C&lt;&lt;"]: "; C = cards[C]; cout&lt;&lt;C&lt;&lt;"\n";</span></br>
 							</span>
 							<span class="fragment fade-up">
 								&nbsp;&nbsp;<em>shuffle</em>(cards.begin(),cards.end(),r);</br>
@@ -113,8 +126,8 @@ using namespace std;
 								&nbsp;&nbsp;cout&lt;&lt;"cards[4]: "&lt;&lt;cards[4]&lt;&lt;"\n";</br>
 							</span>
 							}
-						</span>
-					</code></p>
+						</code>
+					</p>
 				</section>
 				<section data-markdown data-background-image="lib/image/disbelief-logo-white.png" data-background-position="bottom right" data-background-size="5em">
 					<textarea data-template>
@@ -154,11 +167,26 @@ using namespace std;
 		</script>
 		<script>
 			function show_video() {
+				// if (navigator.mediaDevices.enumerateDevices) {
+				// 	navigator.mediaDevices.enumerateDevices()
+				// 		.then(function (info) {
+				// 			for (var i = 0; i !== info.length; ++i) {
+				// 				console.log(info[i]);
+				// 			}
+				// 		});
+				// }
 				var video = document.querySelector("#camera");
 				if (navigator.mediaDevices.getUserMedia) {
-					navigator.mediaDevices.getUserMedia({ video: true })
+					navigator.mediaDevices.getUserMedia({ video: {
+						// USB Cam:
+						deviceId: { exact: "2c675d87b1c20ec22c12a8791271abf5bf19c89b2208a07c75f869ef5c649fad" },
+						// FaceTime Cam:
+						// deviceId: { exact: "88b676202dc5321c3cb4eb8931ee35a0fb16760f88f5b2fd4505ca8722851ce8" },
+						width: { ideal: 960 },
+						height: { ideal: 540 }
+					} })
 						.then(function (stream) { video.srcObject = stream; })
-						.catch(function (err0r) { console.log("Something went wrong!"); });
+						.catch(function (error) { console.log("Something went wrong!"); });
 				}
 			}
 			Reveal.addEventListener('show-camera', show_video);
